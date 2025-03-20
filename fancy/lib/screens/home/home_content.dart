@@ -1,6 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:fancy/data/shop.dart';
 import 'package:fancy/model/shop.dart';
-import 'package:fancy/widgets/product_card.dart';
+import 'package:fancy/widgets/product_details/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -255,7 +257,7 @@ class _HomeContentState extends State<HomeContent> {
                   '${_displayedProducts.length} products found',
                   style: GoogleFonts.marcellus(
                     color: Colors.grey[600],
-                    fontSize: 14,
+                    fontSize: 16,
                   ),
                 ),
                 if (_searchController.text.isNotEmpty ||

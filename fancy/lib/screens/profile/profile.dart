@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:fancy/screens/profile/my_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -51,51 +53,21 @@ class _ProfileState extends State<Profile> {
                   Center(
                     child: Column(
                       children: [
-                        Stack(
-                          children: [
-                            CircleAvatar(
-                              radius: 60,
-                              backgroundColor: const Color.fromARGB(
-                                255,
-                                165,
-                                81,
-                                139,
-                              ),
-                              child: CircleAvatar(
-                                radius: 57,
-                                backgroundImage: AssetImage(userProfileImage),
-                                onBackgroundImageError: (_, __) {
-                                  return;
-                                },
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                height: 36,
-                                width: 36,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: const Color.fromARGB(
-                                      255,
-                                      165,
-                                      81,
-                                      139,
-                                    ),
-                                    width: 2,
-                                  ),
-                                ),
-                                child: const Icon(
-                                  Icons.camera_alt_outlined,
-                                  color: Color.fromARGB(255, 165, 81, 139),
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          ],
+                        CircleAvatar(
+                          radius: 60,
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            165,
+                            81,
+                            139,
+                          ),
+                          child: CircleAvatar(
+                            radius: 57,
+                            backgroundImage: AssetImage(userProfileImage),
+                            onBackgroundImageError: (_, __) {
+                              return;
+                            },
+                          ),
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -215,27 +187,27 @@ class _ProfileState extends State<Profile> {
                             "Manage your payment options",
                             () {},
                           ),
-                          _buildDivider(),
-                          _buildSettingsItem(
-                            Icons.notifications_outlined,
-                            "Notifications",
-                            "Manage your notifications",
-                            () {},
-                          ),
-                          _buildDivider(),
-                          _buildSettingsItem(
-                            Icons.lock_outline,
-                            "Change Password",
-                            "Update your password",
-                            () {},
-                          ),
-                          _buildDivider(),
-                          _buildSettingsItem(
-                            Icons.help_outline,
-                            "Help Center",
-                            "Get help and support",
-                            () {},
-                          ),
+                          // _buildDivider(),
+                          // _buildSettingsItem(
+                          //   Icons.notifications_outlined,
+                          //   "Notifications",
+                          //   "Manage your notifications",
+                          //   () {},
+                          // ),
+                          // _buildDivider(),
+                          // _buildSettingsItem(
+                          //   Icons.lock_outline,
+                          //   "Change Password",
+                          //   "Update your password",
+                          //   () {},
+                          // ),
+                          // _buildDivider(),
+                          // _buildSettingsItem(
+                          //   Icons.help_outline,
+                          //   "Help Center",
+                          //   "Get help and support",
+                          //   () {},
+                          // ),
                         ],
                       ),
                     ),

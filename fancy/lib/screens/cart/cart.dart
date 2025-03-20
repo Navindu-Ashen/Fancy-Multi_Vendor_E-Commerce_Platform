@@ -1,4 +1,5 @@
 import 'package:fancy/data/shop.dart';
+import 'package:fancy/screens/cart/checkout_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -335,17 +336,12 @@ class _ShopListState extends State<ShopList> {
 
                         const SizedBox(height: 16),
 
-                        // Checkout button
                         ElevatedButton(
                           onPressed: () {
-                            // Implement checkout logic
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Proceeding to checkout...',
-                                  style: GoogleFonts.marcellus(),
-                                ),
-                                backgroundColor: Colors.black,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CheckoutPage(),
                               ),
                             );
                           },

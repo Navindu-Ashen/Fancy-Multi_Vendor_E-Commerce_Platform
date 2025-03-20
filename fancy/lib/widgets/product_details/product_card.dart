@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:fancy/data/shop.dart';
 import 'package:fancy/model/shop.dart';
 import 'package:fancy/screens/home/product_detail_page.dart';

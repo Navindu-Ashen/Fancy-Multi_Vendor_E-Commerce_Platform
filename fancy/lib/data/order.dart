@@ -20,7 +20,6 @@ class OrderData {
     }
   }
 
-  // Sample order data
   static final List<Order> _orders = [
     Order(
       id: "FN45692",
@@ -31,14 +30,15 @@ class OrderData {
           name: "Floral Summer Dress",
           price: 3299.99,
           quantity: 1,
-          imageUrl: "assets/images/dress1.jpg",
+          imageUrl: "assets/summer.jpg",
           variant: "Size: M, Color: Blue",
         ),
         OrderItem(
           name: "Leather Handbag",
           price: 2499.99,
           quantity: 1,
-          imageUrl: "assets/images/bag1.jpg",
+          imageUrl:
+              "assets/Willow-brown-leather-sling-bag-brown-model+(12).jpg",
         ),
       ],
       total: 5799.98,
@@ -52,8 +52,8 @@ class OrderData {
           name: "Casual T-Shirt",
           price: 1299.99,
           quantity: 2,
-          imageUrl: "assets/images/tshirt1.jpg",
-          variant: "Size: L, Color: Black",
+          imageUrl: "assets/premium_photo-1690349404224-53f94f20df8f.jpg",
+          variant: "Size: L, Color: White",
         ),
       ],
       total: 2599.98,
@@ -67,15 +67,15 @@ class OrderData {
           name: "Running Shoes",
           price: 4599.99,
           quantity: 1,
-          imageUrl: "assets/images/shoes1.jpg",
-          variant: "Size: 42, Color: White",
+          imageUrl: "assets/shoes.jpg",
+          variant: "Size: 42, Color: Green",
         ),
         OrderItem(
           name: "Sports Shorts",
           price: 1499.99,
           quantity: 1,
-          imageUrl: "assets/images/shorts1.jpg",
-          variant: "Size: M, Color: Black",
+          imageUrl: "assets/shorts.jpg",
+          variant: "Size: M, Color: Gray",
         ),
       ],
       total: 6099.98,
@@ -89,8 +89,8 @@ class OrderData {
           name: "Winter Jacket",
           price: 5299.99,
           quantity: 1,
-          imageUrl: "assets/images/jacket1.jpg",
-          variant: "Size: L, Color: Navy",
+          imageUrl: "assets/brazo-latest-short-off-white-wom.jpg",
+          variant: "Size: L, Color: White",
         ),
       ],
       total: 5299.99,

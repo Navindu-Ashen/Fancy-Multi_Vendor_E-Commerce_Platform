@@ -1,4 +1,3 @@
-// Simplified model classes
 class Order {
   final String id;
   final DateTime date;

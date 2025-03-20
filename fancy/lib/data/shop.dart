@@ -35,6 +35,38 @@ class ProductData {
         'Colors': 'Blue, Pink, Yellow, White',
       },
       relatedProducts: ['31', '32'],
+      reviews: [
+        Review(
+          id: "r001",
+          userName: "Anushka Silva",
+          userImage: "assets/images/user1.jpg",
+          rating: 5.0,
+          comment:
+              "This dress is absolutely gorgeous! The fabric is high quality and the fit is perfect. I've received so many compliments wearing it.",
+          date: DateTime(2024, 03, 15),
+          verified: true,
+        ),
+        Review(
+          id: "r002",
+          userName: "Dilini Fernando",
+          rating: 4.0,
+          comment:
+              "Beautiful dress, but the sizing runs a bit large. I recommend ordering one size down. The material is fantastic though!",
+          date: DateTime(2024, 02, 28),
+          //images: ["assets/images/review1_1.jpg"],
+          helpfulCount: 12,
+          verified: true,
+        ),
+        Review(
+          id: "r003",
+          userName: "Kavindi Perera",
+          rating: 4.5,
+          comment:
+              "Perfect for beach outings and summer parties. Love the pattern and the pockets are a great bonus!",
+          date: DateTime(2024, 03, 02),
+          helpfulCount: 5,
+        ),
+      ],
     ),
     Product(
       id: '31',
@@ -62,6 +94,28 @@ class ProductData {
         'Colors': 'Light Blue, Dark Blue, Black',
       },
       relatedProducts: ['30', '32'],
+      reviews: [
+        Review(
+          id: "r004",
+          userName: "Nimesha Perera",
+          userImage: "",
+          rating: 4.5,
+          comment:
+              "These jeans are amazing! They fit perfectly and are so comfortable to wear all day. I'm definitely buying more in other colors.",
+          date: DateTime(2024, 03, 10),
+          verified: true,
+        ),
+        Review(
+          id: "r005",
+          userName: "Samantha Jayasuriya",
+          rating: 4.0,
+          comment:
+              "Great quality jeans, but the sizing is a bit off. I had to exchange for a smaller size. Otherwise, they're perfect!",
+          date: DateTime(2024, 02, 25),
+          helpfulCount: 8,
+          verified: true,
+        ),
+      ],
     ),
     Product(
       id: '32',
@@ -89,6 +143,18 @@ class ProductData {
         'Colors': 'Beige, Gray, Brown, White',
       },
       relatedProducts: ['30', '31'],
+      reviews: [
+        Review(
+          id: "r006",
+          userName: "Chamathka Silva",
+          userImage: "assets/images/user2.jpg",
+          rating: 5.0,
+          comment:
+              "I absolutely love this sweater! It's so soft and cozy, perfect for winter. The oversized fit is just what I was looking for.",
+          date: DateTime(2024, 03, 05),
+          verified: true,
+        ),
+      ],
     ),
     Product(
       id: '33',
@@ -116,6 +182,18 @@ class ProductData {
         'Colors': 'Black & White, Blue & White, Red & White',
       },
       relatedProducts: ['34', '35'],
+      reviews: [
+        Review(
+          id: "r007",
+          userName: "Dilki Perera",
+          userImage: "assets/images/user3.jpg",
+          rating: 4.5,
+          comment:
+              "Love this skirt! The material is great quality and the fit is perfect. It's so versatile and comfortable to wear all day.",
+          date: DateTime(2024, 03, 08),
+          verified: true,
+        ),
+      ],
     ),
     Product(
       id: '34',
@@ -143,6 +221,28 @@ class ProductData {
         'Colors': 'White, Black, Navy, Gray',
       },
       relatedProducts: ['33', '35'],
+      reviews: [
+        Review(
+          id: "r008",
+          userName: "Nadeesha Jayawardena",
+          userImage: "assets/images/user4.jpg",
+          rating: 4.0,
+          comment:
+              "Great basic tee! The fabric is soft and comfortable, but it shrinks a bit after washing. I recommend sizing up for a looser fit.",
+          date: DateTime(2024, 03, 12),
+          verified: true,
+        ),
+        Review(
+          id: "r009",
+          userName: "Tharindu Perera",
+          rating: 4.5,
+          comment:
+              "This T-shirt is a staple in my wardrobe. It's so versatile and easy to style with anything. The quality is excellent for the price.",
+          date: DateTime(2024, 02, 22),
+          helpfulCount: 10,
+          verified: true,
+        ),
+      ],
     ),
     Product(
       id: '35',
@@ -170,6 +270,28 @@ class ProductData {
         'Colors': 'Black, Brown, Tan',
       },
       relatedProducts: ['33', '34'],
+      reviews: [
+        Review(
+          id: "r010",
+          userName: "Kasun Silva",
+          userImage: "assets/images/user5.jpg",
+          rating: 5.0,
+          comment:
+              "I love this bag! The quality is amazing and it's the perfect size for my everyday essentials. The leather is so soft and durable.",
+          date: DateTime(2024, 03, 20),
+          verified: true,
+        ),
+        Review(
+          id: "r011",
+          userName: "Sachini Perera",
+          rating: 4.5,
+          comment:
+              "Great crossbody bag! The leather is beautiful and the size is perfect for carrying my phone, wallet, and keys. Highly recommend!",
+          date: DateTime(2024, 03, 01),
+          helpfulCount: 6,
+          verified: true,
+        ),
+      ],
     ),
     Product(
       id: '36',
@@ -197,6 +319,28 @@ class ProductData {
         'Colors': 'Pink Floral, Blue Floral, Green Floral',
       },
       relatedProducts: ['30', '32'],
+      reviews: [
+        Review(
+          id: "r012",
+          userName: "Nimasha Jay",
+          userImage: "assets/images/user6.jpg",
+          rating: 4.5,
+          comment:
+              "This dress is stunning! The wrap style is so flattering and the fabric is soft and comfortable. I've received so many compliments wearing it.",
+          date: DateTime(2024, 03, 18),
+          verified: true,
+        ),
+        Review(
+          id: "r013",
+          userName: "Dilshan Perera",
+          rating: 4.0,
+          comment:
+              "Beautiful dress, but the sizing runs a bit large. I recommend ordering one size down. The material is fantastic though!",
+          date: DateTime(2024, 02, 28),
+          helpfulCount: 12,
+          verified: true,
+        ),
+      ],
     ),
     Product(
       id: '37',
@@ -224,6 +368,28 @@ class ProductData {
         'Colors': 'Black, Navy, Gray, Burgundy',
       },
       relatedProducts: ['31', '34'],
+      reviews: [
+        Review(
+          id: "r014",
+          userName: "Nimesha Perera",
+          userImage: "",
+          rating: 4.5,
+          comment:
+              "These leggings are amazing! They fit perfectly and are so comfortable to wear all day. I'm definitely buying more in other colors.",
+          date: DateTime(2024, 03, 10),
+          verified: true,
+        ),
+        Review(
+          id: "r015",
+          userName: "Samantha Jayasuriya",
+          rating: 4.0,
+          comment:
+              "Great quality leggings, but the sizing is a bit off. I had to exchange for a smaller size. Otherwise, they're perfect!",
+          date: DateTime(2024, 02, 25),
+          helpfulCount: 8,
+          verified: true,
+        ),
+      ],
     ),
   ];
 
