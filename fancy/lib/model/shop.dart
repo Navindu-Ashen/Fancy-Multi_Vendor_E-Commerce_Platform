@@ -10,7 +10,7 @@ class Product {
   final double rating;
   final int reviewCount;
   final bool inStock;
-  final bool isFavorite;
+  bool isFavorite;
   final List<String>? features;
   final Map<String, String>? specifications;
   final List<String>? relatedProducts;

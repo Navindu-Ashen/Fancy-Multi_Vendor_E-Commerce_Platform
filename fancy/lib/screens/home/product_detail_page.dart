@@ -47,30 +47,43 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   void _toggleFavorite() {
     setState(() {
       _isFavorite = !_isFavorite;
-      // In a real app, you would update this in your database
+
+      // Update the product's isFavorite property
+      _product.isFavorite = _isFavorite;
+
+      // Add or remove from favorites collection
+      if (_isFavorite) {
+        ProductData.addToFavorites(_product);
+      } else {
+        ProductData.removeFromFavorites(_product);
+      }
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           _isFavorite ? 'Added to favorites' : 'Removed from favorites',
-          style: GoogleFonts.chakraPetch(),
+          style: GoogleFonts.marcellus(),
         ),
-        backgroundColor: const Color.fromARGB(255, 7, 59, 58),
+        backgroundColor: Color.fromARGB(255, 165, 81, 139),
         duration: const Duration(seconds: 2),
       ),
     );
   }
 
   void _addToCart() {
-    // In a real app, you would add this product to the cart
+    // Add the product to cart with the selected quantity
+    ProductData.addToCart(_product, _quantity);
+
+    // Show confirmation
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           'Added $_quantity ${_product.name} to cart',
-          style: GoogleFonts.chakraPetch(),
+          style:
+              GoogleFonts.marcellus(), // Changed to marcellus to match other fonts
         ),
-        backgroundColor: const Color.fromARGB(255, 7, 59, 58),
+        backgroundColor: Color.fromARGB(255, 165, 81, 139),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -82,9 +95,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       SnackBar(
         content: Text(
           'Proceeding to checkout...',
-          style: GoogleFonts.chakraPetch(),
+          style: GoogleFonts.marcellus(),
         ),
-        backgroundColor: const Color.fromARGB(255, 7, 59, 58),
+        backgroundColor: Color.fromARGB(255, 165, 81, 139),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -103,7 +116,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           ),
           title: Text(
             'Product Details',
-            style: GoogleFonts.chakraPetch(
+            style: GoogleFonts.marcellus(
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
@@ -111,7 +124,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         ),
         body: const Center(
           child: CircularProgressIndicator(
-            color: Color.fromARGB(255, 7, 59, 58),
+            color: Color.fromARGB(255, 165, 81, 139),
           ),
         ),
       );
@@ -136,15 +149,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           IconButton(
             icon: Icon(
               _isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: _isFavorite ? Colors.red : Colors.black,
+              color:
+                  _isFavorite
+                      ? Color.fromARGB(255, 165, 81, 139)
+                      : Colors.black,
             ),
             onPressed: _toggleFavorite,
           ),
           IconButton(
             icon: const Icon(Icons.share_outlined, color: Colors.black),
-            onPressed: () {
-              // Implement share functionality
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -202,7 +216,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 border: Border.all(
                                   color:
                                       isSelected
-                                          ? const Color.fromARGB(255, 7, 59, 58)
+                                          ? Color.fromARGB(255, 165, 81, 139)
                                           : Colors.grey.shade300,
                                   width: 2,
                                 ),
@@ -234,19 +248,19 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(
+                            color: Color.fromARGB(
                               255,
-                              146,
-                              227,
-                              169,
+                              165,
+                              81,
+                              139,
                             ).withOpacity(0.2),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
                             _product.category,
-                            style: GoogleFonts.chakraPetch(
+                            style: GoogleFonts.marcellus(
                               fontSize: 12,
-                              color: const Color.fromARGB(255, 7, 59, 58),
+                              color: Color.fromARGB(255, 165, 81, 139),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -257,7 +271,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         // Product name
                         Text(
                           _product.name,
-                          style: GoogleFonts.chakraPetch(
+                          style: GoogleFonts.marcellus(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -282,7 +296,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             const SizedBox(width: 8),
                             Text(
                               '${_product.rating} (${_product.reviewCount} reviews)',
-                              style: GoogleFonts.chakraPetch(
+                              style: GoogleFonts.marcellus(
                                 fontSize: 14,
                                 color: Colors.grey[600],
                               ),
@@ -297,10 +311,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           children: [
                             Text(
                               '\Rs.${_product.price.toStringAsFixed(2)}',
-                              style: GoogleFonts.chakraPetch(
+                              style: GoogleFonts.marcellus(
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
-                                color: const Color.fromARGB(255, 7, 59, 58),
+                                color: Colors.black,
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -308,7 +322,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 _product.originalPrice! > _product.price)
                               Text(
                                 '\Rs.${_product.originalPrice!.toStringAsFixed(2)}',
-                                style: GoogleFonts.chakraPetch(
+                                style: GoogleFonts.marcellus(
                                   fontSize: 18,
                                   decoration: TextDecoration.lineThrough,
                                   color: Colors.grey[500],
@@ -326,16 +340,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   ? Icons.check_circle
                                   : Icons.cancel,
                               color:
-                                  _product.inStock ? Colors.green : Colors.red,
+                                  _product.inStock
+                                      ? Color.fromARGB(255, 165, 81, 139)
+                                      : Colors.red,
                               size: 16,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               _product.inStock ? 'In Stock' : 'Out of Stock',
-                              style: GoogleFonts.chakraPetch(
+                              style: GoogleFonts.marcellus(
                                 color:
                                     _product.inStock
-                                        ? Colors.green
+                                        ? Color.fromARGB(255, 165, 81, 139)
                                         : Colors.red,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -350,7 +366,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           children: [
                             Text(
                               'Quantity',
-                              style: GoogleFonts.chakraPetch(
+                              style: GoogleFonts.marcellus(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -375,12 +391,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                             : null,
                                     color:
                                         _quantity > 1
-                                            ? const Color.fromARGB(
-                                              255,
-                                              7,
-                                              59,
-                                              58,
-                                            )
+                                            ? Color.fromARGB(255, 165, 81, 139)
                                             : Colors.grey,
                                     iconSize: 20,
                                   ),
@@ -391,7 +402,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     ),
                                     child: Text(
                                       '$_quantity',
-                                      style: GoogleFonts.chakraPetch(
+                                      style: GoogleFonts.marcellus(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -404,7 +415,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         _quantity++;
                                       });
                                     },
-                                    color: const Color.fromARGB(255, 7, 59, 58),
+                                    color: Color.fromARGB(255, 165, 81, 139),
                                     iconSize: 20,
                                   ),
                                 ],
@@ -418,7 +429,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         // Description header
                         Text(
                           'Description',
-                          style: GoogleFonts.chakraPetch(
+                          style: GoogleFonts.marcellus(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -430,7 +441,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         // Description
                         Text(
                           _product.description,
-                          style: GoogleFonts.chakraPetch(
+                          style: GoogleFonts.marcellus(
                             fontSize: 14,
                             color: Colors.grey[800],
                             height: 1.5,
@@ -442,7 +453,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         // Features header
                         Text(
                           'Features',
-                          style: GoogleFonts.chakraPetch(
+                          style: GoogleFonts.marcellus(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -461,19 +472,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   children: [
                                     Icon(
                                       Icons.check_circle,
-                                      color: const Color.fromARGB(
-                                        255,
-                                        146,
-                                        227,
-                                        169,
-                                      ),
+                                      color: Color.fromARGB(255, 165, 81, 139),
                                       size: 16,
                                     ),
                                     const SizedBox(width: 8),
                                     Expanded(
                                       child: Text(
                                         feature,
-                                        style: GoogleFonts.chakraPetch(
+                                        style: GoogleFonts.marcellus(
                                           fontSize: 14,
                                           color: Colors.grey[800],
                                         ),
@@ -490,7 +496,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         // Specifications header
                         Text(
                           'Specifications',
-                          style: GoogleFonts.chakraPetch(
+                          style: GoogleFonts.marcellus(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -528,7 +534,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                             flex: 2,
                                             child: Text(
                                               entry.key,
-                                              style: GoogleFonts.chakraPetch(
+                                              style: GoogleFonts.marcellus(
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
@@ -537,7 +543,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                             flex: 3,
                                             child: Text(
                                               entry.value,
-                                              style: GoogleFonts.chakraPetch(),
+                                              style: GoogleFonts.marcellus(),
                                             ),
                                           ),
                                         ],
@@ -554,7 +560,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             _product.relatedProducts!.isNotEmpty)
                           Text(
                             'You May Also Like',
-                            style: GoogleFonts.chakraPetch(
+                            style: GoogleFonts.marcellus(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -629,20 +635,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                 relatedProduct.name,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: GoogleFonts.chakraPetch(
+                                                style: GoogleFonts.marcellus(
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
                                                 '\Rs.${relatedProduct.price.toStringAsFixed(2)}',
-                                                style: GoogleFonts.chakraPetch(
-                                                  color: const Color.fromARGB(
-                                                    255,
-                                                    7,
-                                                    59,
-                                                    58,
-                                                  ),
+                                                style: GoogleFonts.marcellus(
+                                                  color: Colors.black,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -687,7 +688,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       side: BorderSide(
                         color:
                             _product.inStock
-                                ? const Color.fromARGB(255, 7, 59, 58)
+                                ? Color.fromARGB(255, 165, 81, 139)
                                 : Colors.grey,
                       ),
                       shape: RoundedRectangleBorder(
@@ -697,10 +698,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                     child: Text(
                       'Add to Cart',
-                      style: GoogleFonts.chakraPetch(
+                      style: GoogleFonts.marcellus(
                         color:
                             _product.inStock
-                                ? const Color.fromARGB(255, 7, 59, 58)
+                                ? Color.fromARGB(255, 165, 81, 139)
                                 : Colors.grey,
                         fontWeight: FontWeight.bold,
                       ),
@@ -715,7 +716,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   child: ElevatedButton(
                     onPressed: _product.inStock ? _buyNow : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 7, 59, 58),
+                      backgroundColor: Color.fromARGB(255, 165, 81, 139),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -723,7 +724,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                     child: Text(
                       'Buy Now',
-                      style: GoogleFonts.chakraPetch(
+                      style: GoogleFonts.marcellus(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),

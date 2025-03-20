@@ -1,5 +1,4 @@
 import 'package:fancy/screens/auth/get_started_1.dart';
-import 'package:fancy/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';

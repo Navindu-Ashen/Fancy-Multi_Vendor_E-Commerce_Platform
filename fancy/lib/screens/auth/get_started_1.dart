@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+// ignore_for_file: deprecated_member_use
 import 'package:fancy/screens/auth/get_started_2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,83 +13,118 @@ class GetStarted1 extends StatefulWidget {
 class _GetStarted1State extends State<GetStarted1> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Container(
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/fc08582a7dac820a48e90ead75307705.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Container(
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/fc08582a7dac820a48e90ead75307705.jpg"),
-              fit: BoxFit.cover,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.black.withOpacity(0.4),
+                Colors.black.withOpacity(0.7),
+              ],
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40),
-            child: Center(
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Stack(
+                  Column(
                     children: [
-                      Positioned.fill(
-                        child: ImageFiltered(
-                          imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: Container(
-                            color: Colors.black.withOpacity(0.3),
-                          ),
+                      Text(
+                        "FANCY",
+                        style: GoogleFonts.marcellus(
+                          fontSize: 55,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 2,
                         ),
                       ),
 
-                      Container(
-                        width: double.infinity,
-                        height: 250,
-                        decoration: BoxDecoration(color: Colors.transparent),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "FANCY",
-                              style: GoogleFonts.marcellus(
-                                fontSize: 55,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                      const SizedBox(height: 40),
+
+                      Text(
+                        "Discover the new",
+                        style: GoogleFonts.marcellus(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(0.4),
+                              offset: const Offset(1, 1),
+                              blurRadius: 3,
                             ),
-                            SizedBox(height: 10),
-                            Text(
-                              "Discover the new world of fashion",
-                              style: GoogleFonts.marcellus(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        "world of fashion",
+                        style: GoogleFonts.marcellus(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: const Color.fromARGB(255, 165, 81, 139),
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(0.4),
+                              offset: const Offset(1, 1),
+                              blurRadius: 3,
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => GetStarted2()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                  Container(
+                    width: double.infinity,
+                    height: 60,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const GetStarted2(),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        elevation: 5,
+                        shadowColor: Colors.black.withOpacity(0.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      "Let's Explore",
-                      style: GoogleFonts.marcellus(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Let's Explore",
+                            style: GoogleFonts.marcellus(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: const Color.fromARGB(255, 165, 81, 139),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          const Icon(
+                            Icons.arrow_forward_rounded,
+                            color: Color.fromARGB(255, 165, 81, 139),
+                            size: 24,
+                          ),
+                        ],
                       ),
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:fancy/data/shop.dart';
 import 'package:fancy/model/shop.dart';
 import 'package:fancy/screens/home/product_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class ProductCard extends StatelessWidget {
                         ),
                         child: Text(
                           'SALE',
-                          style: GoogleFonts.chakraPetch(
+                          style: GoogleFonts.marcellus(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
@@ -94,7 +95,7 @@ class ProductCard extends StatelessWidget {
                       ),
                       child: Text(
                         product.category,
-                        style: const TextStyle(
+                        style: GoogleFonts.marcellus(
                           color: Colors.white,
                           fontSize: 10,
                         ),
@@ -113,7 +114,7 @@ class ProductCard extends StatelessWidget {
                     product.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.chakraPetch(fontWeight: FontWeight.bold),
+                    style: GoogleFonts.marcellus(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
                   Column(
@@ -122,7 +123,7 @@ class ProductCard extends StatelessWidget {
                       if (product.originalPrice != null) ...[
                         Text(
                           '\Rs.${product.originalPrice!.toStringAsFixed(2)}',
-                          style: TextStyle(
+                          style: GoogleFonts.marcellus(
                             decoration: TextDecoration.lineThrough,
                             color: Colors.grey[600],
                             fontSize: 12,
@@ -131,7 +132,7 @@ class ProductCard extends StatelessWidget {
                       ],
                       Text(
                         '\Rs.${product.price.toStringAsFixed(2)}',
-                        style: TextStyle(
+                        style: GoogleFonts.marcellus(
                           color:
                               product.originalPrice != null
                                   ? Colors.red
@@ -148,19 +149,22 @@ class ProductCard extends StatelessWidget {
                       const Icon(Icons.star, color: Colors.amber, size: 16),
                       Text(
                         ' ${product.rating}',
-                        style: const TextStyle(
+                        style: GoogleFonts.marcellus(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
                         ' (${product.reviewCount})',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: GoogleFonts.marcellus(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
                       ),
                       const Spacer(),
                       Container(
                         decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 146, 227, 169),
+                          color: Color.fromARGB(255, 165, 81, 139),
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
@@ -171,22 +175,19 @@ class ProductCard extends StatelessWidget {
                           ),
                           icon: const Icon(
                             Icons.add_shopping_cart,
-                            size: 16,
-                            color: Color.fromARGB(255, 7, 59, 58),
+                            size: 20,
+                            color: Colors.white,
                           ),
                           onPressed: () {
+                            ProductData.addToCart(product, 1);
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
                                   'Added ${product.name} to cart',
-                                  style: GoogleFonts.chakraPetch(),
+                                  style: GoogleFonts.marcellus(),
                                 ),
-                                backgroundColor: const Color.fromARGB(
-                                  255,
-                                  7,
-                                  59,
-                                  58,
-                                ),
+                                backgroundColor: Colors.black,
                                 duration: const Duration(seconds: 2),
                               ),
                             );
