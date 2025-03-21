@@ -15,13 +15,13 @@ class OrderCard extends StatelessWidget {
     Color statusColor;
     switch (order.status) {
       case "Processing":
-        statusColor = Colors.deepPurpleAccent;
+        statusColor = Colors.black;
         break;
       case "Shipped":
-        statusColor = Colors.purple;
+        statusColor = const Color.fromARGB(255, 85, 52, 175);
         break;
       case "Delivered":
-        statusColor = Colors.green;
+        statusColor = const Color.fromARGB(255, 49, 114, 52);
         break;
       default:
         statusColor = Colors.grey;

@@ -5,7 +5,7 @@ import 'package:fancy/widgets/cart/credit_card_form.dart';
 import 'package:fancy/widgets/cart/delivery_options.dart';
 import 'package:fancy/widgets/cart/order_summery.dart';
 import 'package:fancy/widgets/cart/payment_method.dart';
-import 'package:fancy/widgets/cart/section_tile.dart';
+import 'package:fancy/widgets/section_tile.dart';
 import 'package:fancy/widgets/cart/shipping_info.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
