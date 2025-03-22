@@ -1,5 +1,10 @@
+import 'package:fancy/main.dart';
+import 'package:fancy/model/user.dart';
+import 'package:fancy/providers/user_provider.dart';
+import 'package:fancy/widgets/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -12,15 +17,70 @@ class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _aboutController = TextEditingController();
+  final TextEditingController _contactNumberController =
+      TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
+
+  void _handleSignUp() async {
+    if (_formKey.currentState!.validate()) {
+      print('Name: ${_usernameController.text}');
+      print('Contact Number: ${_contactNumberController.text}');
+      print('Email: ${_emailController.text}');
+      print('Password: ${_passwordController.text}');
+
+      final userProvider = context.read<UserProvider>();
+      if (userProvider.profileImage == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Please select a profile image',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.marcellus(fontWeight: FontWeight.normal),
+            ),
+            backgroundColor: Color.fromARGB(255, 165, 81, 139),
+          ),
+        );
+        return;
+      }
+
+      try {
+        User user = User(
+          uid: "",
+          username: _usernameController.text,
+          email: _emailController.text,
+          contactNumber: _contactNumberController.text,
+          profilePictureURL: "",
+        );
+
+        await context.read<UserProvider>().registerUser(
+          user,
+          _passwordController.text,
+        );
+
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const MyApp()),
+          (route) => false,
+        );
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Registration failed: ${error.toString()}',
+              style: GoogleFonts.marcellus(color: Colors.white),
+            ),
+            backgroundColor: Color.fromARGB(255, 207, 79, 79),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   void dispose() {
     _emailController.dispose();
     _usernameController.dispose();
-    _aboutController.dispose();
+    _contactNumberController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -30,6 +90,8 @@ class _SignUpState extends State<SignUp> {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
+        height: screenSize.height,
+        width: screenSize.width,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
@@ -68,78 +130,7 @@ class _SignUpState extends State<SignUp> {
                         spacing: 16,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Stack(
-                            children: [
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: SizedBox(
-                                  child: CircleAvatar(
-                                    radius: 84,
-                                    backgroundColor: Color.fromARGB(
-                                      255,
-                                      165,
-                                      81,
-                                      139,
-                                    ),
-                                    child: CircleAvatar(
-                                      radius: 78.0,
-                                      backgroundImage: AssetImage(""),
-                                      child: Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: GestureDetector(
-                                          onTap: () {},
-                                          child: IconButton(
-                                            onPressed: () {},
-                                            icon: const Icon(
-                                              Icons.add_a_photo_rounded,
-                                            ),
-                                            iconSize: 30,
-                                            padding: const EdgeInsets.all(10),
-                                            color: Colors.white,
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  WidgetStateProperty.all<
-                                                    Color
-                                                  >(
-                                                    Color.fromARGB(
-                                                      255,
-                                                      165,
-                                                      81,
-                                                      139,
-                                                    ),
-                                                  ),
-                                            ),
-                                          ),
-                                          // IconButton(
-                                          //     onPressed: () {
-                                          //       context
-                                          //           .read<UserProvider>()
-                                          //           .clearImage();
-                                          //     },
-                                          //     icon: const Icon(
-                                          //         Icons.cancel_outlined),
-                                          //     iconSize: 30,
-                                          //     padding:
-                                          //         const EdgeInsets.all(
-                                          //             10),
-                                          //     color: Colors.white,
-                                          //     style: ButtonStyle(
-                                          //       backgroundColor:
-                                          //           WidgetStateProperty
-                                          //               .all<Color>(
-                                          //         Color.fromARGB(
-                                          //             255, 245, 146, 69),
-                                          //       ),
-                                          //     ),
-                                          //   )
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          UserImagePicker(onPickedImage: (pickedImage) {}),
                           TextFormField(
                             controller: _usernameController,
                             decoration: InputDecoration(
@@ -176,7 +167,8 @@ class _SignUpState extends State<SignUp> {
                             },
                           ),
                           TextFormField(
-                            controller: _aboutController,
+                            controller: _contactNumberController,
+                            keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
                               labelText: 'Contact Number',
                               labelStyle: GoogleFonts.marcellus(
@@ -207,31 +199,12 @@ class _SignUpState extends State<SignUp> {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your contact number';
                               }
+                              if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+                                return 'Please enter a valid 10-digit phone number';
+                              }
                               return null;
                             },
                           ),
-                          // TextFormField(
-                          //   decoration: InputDecoration(
-                          //     labelText: 'Address',
-                          //     labelStyle: GoogleFonts.marcellus(
-                          //       color: Color.fromARGB(100, 0, 0, 0),
-                          //     ),
-                          //     prefixIcon: Icon(Icons.location_pin),
-                          //     prefixIconColor: Color.fromARGB(255, 246, 166, 221),
-                          //     border: OutlineInputBorder(),
-                          //     enabledBorder: OutlineInputBorder(
-                          //       borderSide: BorderSide(
-                          //         color: Color.fromARGB(255, 246, 166, 221),
-                          //       ),
-                          //     ),
-                          //     focusedBorder: OutlineInputBorder(
-                          //       borderSide: BorderSide(
-                          //         color: Color.fromARGB(255, 165, 81, 139),
-                          //         width: 2,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
@@ -266,7 +239,6 @@ class _SignUpState extends State<SignUp> {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your email';
                               }
-                              // Add email format validation
                               bool emailValid = RegExp(
                                 r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
                               ).hasMatch(value);
@@ -276,7 +248,6 @@ class _SignUpState extends State<SignUp> {
                               return null;
                             },
                           ),
-
                           TextFormField(
                             controller: _passwordController,
                             obscureText: !_isPasswordVisible,
@@ -335,34 +306,38 @@ class _SignUpState extends State<SignUp> {
                             },
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: _handleSignUp,
+
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
                               fixedSize: Size(screenSize.width, 58),
-                              backgroundColor: Color.fromARGB(
-                                255,
-                                165,
-                                81,
-                                139,
-                              ),
+
+                              backgroundColor:
+                                  context.watch<UserProvider>().isLoading
+                                      ? Colors.grey
+                                      : Color.fromARGB(255, 165, 81, 139),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              disabledBackgroundColor: const Color.fromARGB(
-                                255,
-                                165,
-                                81,
-                                139,
-                              ),
                             ),
-                            child: Text(
-                              'Sign Up',
-                              style: GoogleFonts.marcellus(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
+                            child:
+                                context.watch<UserProvider>().isLoading
+                                    ? SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 3,
+                                      ),
+                                    )
+                                    : Text(
+                                      'Sign Up',
+                                      style: GoogleFonts.marcellus(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                           ),
                         ],
                       ),

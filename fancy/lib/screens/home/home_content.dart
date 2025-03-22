@@ -2,9 +2,11 @@
 
 import 'package:fancy/data/shop.dart';
 import 'package:fancy/model/shop.dart';
+import 'package:fancy/providers/user_provider.dart';
 import 'package:fancy/widgets/product_details/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
@@ -136,19 +138,22 @@ class _HomeContentState extends State<HomeContent> {
                 const SizedBox(width: 16),
 
                 ClipOval(
-                  child: Image.asset(
-                    'assets/profile.jpg',
-                    width: 40,
-                    height: 40,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 40,
-                        height: 40,
-                        color: Colors.grey[300],
-                        child: Icon(Icons.person, color: Colors.grey[600]),
-                      );
-                    },
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    color: Color.fromARGB(255, 165, 81, 139),
+                    child: FadeInImage.assetNetwork(
+                      placeholder: 'assets/logo_bg.png',
+                      image:
+                          context.read<UserProvider>().user!.profilePictureURL,
+                      fit: BoxFit.cover,
+                      imageErrorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.error);
+                      },
+                      placeholderFit: BoxFit.cover,
+                      fadeInDuration: const Duration(milliseconds: 500),
+                      fadeInCurve: Curves.easeIn,
+                    ),
                   ),
                 ),
               ],

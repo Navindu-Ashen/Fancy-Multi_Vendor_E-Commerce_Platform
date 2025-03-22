@@ -1,7 +1,9 @@
 import 'package:fancy/data/shop.dart';
+import 'package:fancy/main.dart';
 import 'package:fancy/model/delivery_options.dart';
+import 'package:fancy/providers/user_provider.dart';
+import 'package:fancy/services/stripe_services.dart';
 import 'package:fancy/widgets/cart/checkout_bottom_bar.dart';
-import 'package:fancy/widgets/cart/credit_card_form.dart';
 import 'package:fancy/widgets/cart/delivery_options.dart';
 import 'package:fancy/widgets/cart/order_summery.dart';
 import 'package:fancy/widgets/cart/payment_method.dart';
@@ -9,6 +11,7 @@ import 'package:fancy/widgets/section_tile.dart';
 import 'package:fancy/widgets/cart/shipping_info.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
@@ -20,11 +23,7 @@ class CheckoutPage extends StatefulWidget {
 class _CheckoutPageState extends State<CheckoutPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final List<String> _paymentMethods = [
-    'Credit Card',
-    'Cash on Delivery',
-    'Bank Transfer',
-  ];
+  final List<String> _paymentMethods = ['Credit Card', 'Cash on Delivery'];
   String _selectedPaymentMethod = 'Credit Card';
 
   final List<DeliveryOption> _deliveryOptions = [
@@ -62,8 +61,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
     super.initState();
     _selectedDeliveryOption = _deliveryOptions.first;
 
-    _nameController.text = 'John Doe';
-    _phoneController.text = '0771234567';
+    final userProvider = context.read<UserProvider>();
+
+    _nameController.text = userProvider.user!.username;
+    _phoneController.text = userProvider.user!.contactNumber;
     _addressController.text = '123 Main Street, Apartment 4B';
     _cityController.text = 'Colombo';
     _postalCodeController.text = '00100';
@@ -87,7 +88,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   double get _deliveryFee => _selectedDeliveryOption?.price ?? 0;
   double get _total => _subtotal + _deliveryFee;
 
-  void _processPayment() {
+  Future<void> _processPayment() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -102,20 +103,25 @@ class _CheckoutPageState extends State<CheckoutPage> {
       return;
     }
 
-    setState(() {
-      _isProcessing = true;
-    });
-
-    // Simulate payment processing
-    Future.delayed(const Duration(seconds: 2), () {
-      // If payment is successful
+    if (_selectedPaymentMethod == 'Credit Card') {
+      final user = context.read<UserProvider>();
+      user.toggleLoading();
+      await StripeService.instance.makePayment(user.user!.username);
+      user.toggleLoading();
+      _showOrderSuccessDialog();
+    } else {
       setState(() {
-        _isProcessing = false;
+        _isProcessing = true;
       });
 
-      // Show success dialog
-      _showOrderSuccessDialog();
-    });
+      Future.delayed(const Duration(seconds: 2), () {
+        setState(() {
+          _isProcessing = false;
+        });
+
+        _showOrderSuccessDialog();
+      });
+    }
   }
 
   void _showOrderSuccessDialog() {
@@ -157,9 +163,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
             actions: [
               TextButton(
                 onPressed: () {
-                  // Clear cart and go back to home
                   ProductData.clearCart();
-                  Navigator.popUntil(context, (route) => route.isFirst);
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const MyApp()),
+                    (route) => false,
+                  );
                 },
                 child: Text(
                   'Continue Shopping',
@@ -205,7 +213,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       color: Color.fromARGB(255, 165, 81, 139),
                     ),
                     SizedBox(height: 16),
-                    Text('Processing your payment...'),
+                    Text('Processing your order...'),
                   ],
                 ),
               )
@@ -269,15 +277,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   });
                                 }
                               },
-                            ),
-
-                            // Credit card form if applicable
-                            CreditCardForm(
-                              cardNumberController: _cardNumberController,
-                              cardHolderController: _cardHolderController,
-                              expiryController: _expiryController,
-                              cvvController: _cvvController,
-                              isActive: _selectedPaymentMethod == 'Credit Card',
                             ),
 
                             const SizedBox(height: 24),

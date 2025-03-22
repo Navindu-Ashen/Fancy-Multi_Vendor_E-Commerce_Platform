@@ -1,12 +1,23 @@
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:fancy/const.dart';
+import 'package:fancy/providers/user_provider.dart';
 import 'package:fancy/screens/auth/get_started_1.dart';
+import 'package:fancy/screens/home/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  await _setup();
+  runApp(const MyApp());
+}
+
+Future<void> _setup() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  Stripe.publishableKey = publishableKey;
 }
 
 class MyApp extends StatelessWidget {
@@ -14,12 +25,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fancy',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pinkAccent),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (ctx) => UserProvider())],
+      child: MaterialApp(
+        title: 'Fancy',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.pinkAccent),
+        ),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, snapshot) {
+            if (snapshot.hasData) {
+              return const HomeScreen();
+            }
+            return const GetStarted1();
+          },
+        ),
       ),
-      home: GetStarted1(),
     );
   }
 }

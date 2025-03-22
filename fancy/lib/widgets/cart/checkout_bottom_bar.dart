@@ -1,7 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:fancy/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class CheckoutBottomBar extends StatelessWidget {
   final double total;
@@ -54,20 +56,30 @@ class CheckoutBottomBar extends StatelessWidget {
           ElevatedButton(
             onPressed: onPayPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 165, 81, 139),
+              backgroundColor:
+                  context.watch<UserProvider>().isLoading
+                      ? Colors.grey
+                      : const Color.fromARGB(255, 165, 81, 139),
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: Text(
-              'Pay Now',
-              style: GoogleFonts.marcellus(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
+            child:
+                context.watch<UserProvider>().isLoading
+                    ? SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(color: Colors.white),
+                    )
+                    : Text(
+                      'Pay Now',
+                      style: GoogleFonts.marcellus(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
           ),
         ],
       ),

@@ -1,7 +1,10 @@
+import 'package:fancy/main.dart';
+import 'package:fancy/providers/user_provider.dart';
 import 'package:fancy/screens/auth/sign_up.dart';
 import 'package:fancy/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -11,13 +14,52 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
+
+  void _handleLogin() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        final userProvider = context.read<UserProvider>();
+        await userProvider.loginUser(
+          _emailController.text.trim(),
+          _passwordController.text,
+        );
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const MyApp()),
+          (route) => false,
+        );
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Login failed: ${error.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
+        height: screenSize.height,
+        width: screenSize.width,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
@@ -30,6 +72,7 @@ class _SignInState extends State<SignIn> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Form(
+              key: _formKey,
               child: SingleChildScrollView(
                 child: SizedBox(
                   width: double.infinity,
@@ -67,6 +110,7 @@ class _SignInState extends State<SignIn> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextFormField(
+                            controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               hoverColor: Color.fromARGB(255, 165, 81, 139),
@@ -99,10 +143,14 @@ class _SignInState extends State<SignIn> {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your email';
                               }
+                              if (!_isValidEmail(value)) {
+                                return 'Please enter a valid email';
+                              }
                               return null;
                             },
                           ),
                           TextFormField(
+                            controller: _passwordController,
                             obscureText: !_isPasswordVisible,
                             decoration: InputDecoration(
                               labelText: 'Password',
@@ -152,40 +200,44 @@ class _SignInState extends State<SignIn> {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your password';
                               }
+                              if (value.length < 6) {
+                                return 'Password must be at least 6 characters';
+                              }
                               return null;
                             },
                           ),
                           //
                           const SizedBox(height: 32),
                           ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomeScreen(),
-                                ),
-                              );
-                            },
+                            onPressed: _handleLogin,
                             style: ElevatedButton.styleFrom(
                               fixedSize: Size(screenSize.width, 58),
-                              backgroundColor: Color.fromARGB(
-                                255,
-                                165,
-                                81,
-                                139,
-                              ),
+                              backgroundColor:
+                                  context.watch<UserProvider>().isLoading
+                                      ? Colors.grey
+                                      : Color.fromARGB(255, 165, 81, 139),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(4),
                               ),
                             ),
-                            child: Text(
-                              'Sign In',
-                              style: GoogleFonts.marcellus(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
+                            child:
+                                context.watch<UserProvider>().isLoading
+                                    ? SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 3,
+                                      ),
+                                    )
+                                    : Text(
+                                      'Sign In',
+                                      style: GoogleFonts.marcellus(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                           ),
                         ],
                       ),
