@@ -1,6 +1,7 @@
 import 'package:fancy/data/shop.dart';
 import 'package:fancy/main.dart';
 import 'package:fancy/model/delivery_options.dart';
+import 'package:fancy/notifications/notifications.dart';
 import 'package:fancy/providers/user_provider.dart';
 import 'package:fancy/services/stripe_services.dart';
 import 'package:fancy/widgets/cart/checkout_bottom_bar.dart';
@@ -124,7 +125,20 @@ class _CheckoutPageState extends State<CheckoutPage> {
     }
   }
 
-  void _showOrderSuccessDialog() {
+  Future<void> _showOrderSuccessDialog() async {
+    try {
+      await Notifications().showNotification(
+        title: 'Fancy: Order Confirmation',
+        body:
+            '${_nameController.text}, your order has been placed successfully! Thank you for shopping with Fancy!',
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to send notification: $e')),
+        );
+      }
+    }
     showDialog(
       context: context,
       barrierDismissible: false,
