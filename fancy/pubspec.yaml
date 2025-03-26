@@ -46,6 +46,7 @@ dependencies:
   dio: ^5.8.0+1
   flutter_stripe: ^11.4.0
   timeline_tile: ^2.0.0
+  flutter_local_notifications: ^19.0.0
 
 dev_dependencies:
   flutter_test:

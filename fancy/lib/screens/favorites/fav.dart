@@ -1,4 +1,5 @@
 import 'package:fancy/data/shop.dart';
+import 'package:fancy/notifications/notifications.dart';
 import 'package:fancy/widgets/product_details/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,7 +46,16 @@ class _FavState extends State<Fav> {
               ),
             ),
           ),
-
+          ElevatedButton(
+            onPressed: () {
+              // Show notification
+              Notifications().showNotification(
+                title: 'Notification',
+                body: 'This is a notification',
+              );
+            },
+            child: Text('notification'),
+          ),
           // Main content
           Expanded(
             child:

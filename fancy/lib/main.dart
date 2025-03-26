@@ -1,3 +1,4 @@
+import 'package:fancy/notifications/notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:fancy/const.dart';
 import 'package:fancy/providers/user_provider.dart';
@@ -18,6 +19,7 @@ Future<void> _setup() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Stripe.publishableKey = publishableKey;
+  Notifications().initNotification();
 }
 
 class MyApp extends StatelessWidget {
