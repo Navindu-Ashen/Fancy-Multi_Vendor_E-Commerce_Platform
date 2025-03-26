@@ -19,7 +19,7 @@ Future<void> _setup() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Stripe.publishableKey = publishableKey;
-  Notifications().initNotification();
+  await Notifications().init();
 }
 
 class MyApp extends StatelessWidget {

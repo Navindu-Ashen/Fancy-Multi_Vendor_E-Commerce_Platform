@@ -47,14 +47,26 @@ class _FavState extends State<Fav> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              // Show notification
-              Notifications().showNotification(
-                title: 'Notification',
-                body: 'This is a notification',
-              );
+            onPressed: () async {
+              try {
+                await Notifications().showNotification(
+                  title: 'Fancy App',
+                  body: 'This is a test notification!',
+                );
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Notification sent!')),
+                  );
+                }
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to send notification: $e')),
+                  );
+                }
+              }
             },
-            child: Text('notification'),
+            child: const Text('Send Notification'),
           ),
           // Main content
           Expanded(

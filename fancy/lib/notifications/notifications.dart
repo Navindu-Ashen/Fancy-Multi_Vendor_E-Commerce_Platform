@@ -1,51 +1,85 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Notifications {
-  final notificationsPlugin = FlutterLocalNotificationsPlugin();
-  bool _isInitialized = false;
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-  bool get isInitialized => _isInitialized;
+  static final Notifications _instance = Notifications._internal();
 
-  // Initialize the notifications plugin
-  Future<void> initNotification() async {
-    if (_isInitialized) return;
-
-    const initSettingsAndroid = AndroidInitializationSettings(
-      'android/app/src/main/res/mipmap-hdpi/ic_launcher.png',
-    );
-
-    const initSettings = InitializationSettings(android: initSettingsAndroid);
-
-    await notificationsPlugin.initialize(initSettings);
+  factory Notifications() {
+    return _instance;
   }
 
-  // Notification details
-  NotificationDetails notificationDetails() {
-    return const NotificationDetails(
-      android: AndroidNotificationDetails(
-        'daily_channel_id',
-        'Daily_Notifications',
-        channelDescription: 'Daily Notification Channel',
-        importance: Importance.max,
-        priority: Priority.high,
-      ),
+  Notifications._internal();
+
+  Future<void> init() async {
+    // Android initialization settings
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    // iOS initialization settings
+    const DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings(
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
+        );
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+          android: initializationSettingsAndroid,
+          iOS: initializationSettingsIOS,
+        );
+
+    await _flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (details) {
+        // Handle notification tap
+      },
     );
+
+    // Request Android permissions
+    await _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.requestNotificationsPermission();
   }
 
-  // Show the notification
   Future<void> showNotification({
+    required String title,
+    required String body,
     int id = 0,
-    String? title,
-    String? body,
   }) async {
-    await notificationsPlugin.show(
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          'fancy_channel_id',
+          'Fancy Notifications',
+          channelDescription: 'Notifications from Fancy app',
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: true,
+          enableVibration: true,
+          enableLights: true,
+          playSound: true,
+        );
+
+    // Define iOS notification details
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+        DarwinNotificationDetails();
+
+    // Combine platform-specific details
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    // Show the notification
+    await _flutterLocalNotificationsPlugin.show(
       id,
       title,
       body,
-      const NotificationDetails(),
+      platformChannelSpecifics,
     );
   }
-
-  // On notification click
 }

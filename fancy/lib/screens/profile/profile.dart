@@ -19,11 +19,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final String userName = "Binadi Dissanayake";
-  final String userEmail = "NaviBina@gmail.com";
-  final String userPhone = "+94 77 123 4567";
   final String userAddress = "123 Main Street, Colombo";
-  final String userProfileImage = "assets/images/profile.jpg";
 
   void showEditProfileDialog() {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
