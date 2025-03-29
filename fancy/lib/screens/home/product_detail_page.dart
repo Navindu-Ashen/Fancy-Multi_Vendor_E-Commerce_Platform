@@ -202,6 +202,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     reviews: _product.reviews,
                     rating: _product.rating,
                     reviewCount: _product.reviewCount,
+                    productId: _product.id,
                   ),
 
                   const SizedBox(height: 24),
