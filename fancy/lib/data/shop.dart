@@ -39,7 +39,7 @@ class ProductData {
         Review(
           id: "r001",
           userName: "Anushka Silva",
-          userImage: "assets/images/user1.jpg",
+          userImage: "https://randomuser.me/api/portraits/women/32.jpg",
           rating: 5.0,
           comment:
               "This dress is absolutely gorgeous! The fabric is high quality and the fit is perfect. I've received so many compliments wearing it.",

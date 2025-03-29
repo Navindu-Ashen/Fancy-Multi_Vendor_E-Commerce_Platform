@@ -276,7 +276,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
                 radius: 20,
                 backgroundImage:
                     review.userImage != null
-                        ? AssetImage(review.userImage!)
+                        ? NetworkImage(review.userImage!)
                         : null,
                 child:
                     review.userImage == null
@@ -498,8 +498,8 @@ class _WriteReviewSheetState extends State<WriteReviewSheet> {
       // Create a new Review object
       final newReview = Review(
         id: "r${DateTime.now().millisecondsSinceEpoch}",
-        userName: "Current User",
-        userImage: "assets/images/user.png",
+        userName: context.read<UserProvider>().user!.username,
+        userImage: context.read<UserProvider>().user!.profilePictureURL,
         rating: _rating,
         comment: _reviewController.text,
         date: DateTime.now(),
